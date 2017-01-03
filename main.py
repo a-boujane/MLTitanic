@@ -1,3 +1,6 @@
+#This program is the main program that reads the data
+# and cleans it up 
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

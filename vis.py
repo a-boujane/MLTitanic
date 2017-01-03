@@ -1,3 +1,6 @@
+# This program read the output of main.py.
+# It is used for validation only
+
 import pandas as pd 
 import numpy as np
 import matplotlib.pyplot as plt
