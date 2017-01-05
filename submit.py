@@ -1,6 +1,9 @@
-import vis
+import pandas as pd 
+import numpy as np
 
-df=vis.pd.read_csv("./data/gendermodel.csv")
-df=df.drop("Survived",axis=1);
-df["Survived"]=vis.hy
-df.to_csv("./data/output/submit.csv",index=False)
+
+def submit(hy):
+    df=pd.read_csv("./data/gendermodel.csv")
+    df=df.drop("Survived",axis=1);
+    df["Survived"]=hy
+    df.to_csv("./data/output/submit.csv",index=False)

@@ -2,10 +2,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn import linear_model as lm
-import main as mn
+import initialCleanUp as icu
 
 def getX():
-    X=mn.cleanUp("./data/test.csv").as_matrix()
+    X=icu.cleanUp("./data/test.csv").as_matrix()
     return X
 
 def getY():
