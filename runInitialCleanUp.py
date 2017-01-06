@@ -1,4 +1,6 @@
 import initialCleanUp as icu
 path='./data/train.csv'
-df=icu.cleanUp(path)
+darray=['PassengerId', 'Name', 'Ticket',
+                'Fare', 'Cabin', 'Parch','SibSp','Embarked']
+df=icu.cleanUp(path,darray)
 df.to_csv('./data/output/trainClean.csv', index=False)

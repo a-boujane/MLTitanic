@@ -6,13 +6,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def cleanUp(path):
+def cleanUp(path, array):
     # Reading the Data
     df = pd.read_csv(path)
-    n = len(df)
     # Dropping irrelevant information
-    df = df.drop(['PassengerId', 'Name', 'Ticket',
-                'Fare', 'Cabin', 'Parch','SibSp','Embarked'], axis=1)
+    df = df.drop(array, axis=1)
     
     df.Sex = df.Sex.map({'female': 0, 'male': 1}).astype(int)
     mAge = df["Age"].mean()
