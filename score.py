@@ -5,7 +5,9 @@ from sklearn import linear_model as lm
 import initialCleanUp as icu
 
 def getX():
-    X=icu.cleanUp("./data/test.csv").as_matrix()
+    darray=['PassengerId', 'Name', 'Ticket',
+                'Fare', 'Cabin', 'Parch','SibSp','Embarked']
+    X=icu.cleanUp("./data/test.csv",darray).as_matrix()
     return X
 
 def getY():
