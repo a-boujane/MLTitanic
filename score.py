@@ -6,7 +6,7 @@ import initialCleanUp as icu
 
 def getX():
     darray=['PassengerId', 'Name', 'Ticket',
-                'Fare', 'Cabin', 'Parch','SibSp','Embarked']
+                'Fare', 'Cabin','Embarked']
     X=icu.cleanUp("./data/test.csv",darray).as_matrix()
     return X
 

@@ -4,6 +4,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+from sklearn import preprocessing
 
 
 def cleanUp(path, array):
@@ -15,7 +16,8 @@ def cleanUp(path, array):
     df.Sex = df.Sex.map({'female': 0, 'male': 1}).astype(int)
     mAge = df["Age"].mean()
     df["Age"] = df["Age"].fillna(np.random.normal(loc=mAge, scale=5))
-
+    min_max_scaler = preprocessing.MinMaxScaler()
+    df["Age"]=min_max_scaler.fit_transform(df["Age"])
     return df;
 
 

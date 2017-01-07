@@ -9,5 +9,7 @@ def submit(hy):
     df["Survived"]=hy
     df.to_csv("./data/output/submit.csv",index=False)
 
-clf = vs.classify(C=0.9,penalty='l2')
+clf = vs.nnClassify(i=5,j=28)
+# clf = vs.classify(C=1.5)
+# clf=vs.rfClaffisy(n_estimators=17)
 submit(clf.predict(sc.getX()))
