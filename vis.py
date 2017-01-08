@@ -43,12 +43,12 @@ def classify(X=X,y=y,C=1.5,penalty='l1'):
 Neural Networks classification and validation methods
 '''
 
-def nnClassify_validate(X,y,cvX,cvy,i,j):
-    clf=nnClassify(X,y,i,j)
+def nnClassify_validate(X,y,cvX,cvy,alpha):
+    clf=nnClassify(X,y,alpha)
     return cv.validate(clf,cvX,cvy,1)
 
 
-def nnClassify(X=X,y=y,i=50,j=2,alpha=1e-5):
+def nnClassify(X=X,y=y,alpha=1.e-14,i=4,j=15):
     clf=MLPClassifier(solver='lbfgs',alpha=alpha,hidden_layer_sizes=(i,j),random_state=1,activation="logistic")
     clf.fit(X,y)
     return clf
@@ -74,15 +74,15 @@ def rfClaffisy(X=X,y=y,n_estimators=10):
 ***********************************
 '''
 
-alpha=np.logspace(1e-30,0.3,50)
 
 
-def runSaved(boo):
+
+def runSaved(boo,name="mean"):
     if boo:
-        mean=utl.load()
+        mean=utl.load(name)
     else:
-        mean=runCrossValidation(nnClassify_validate,i,j)
-        utl.save(mean)
+        mean=runCrossValidation(nnClassify_validate,alpha)
+        utl.save(mean,name)
     return mean
 
 def crossValidate(method,*args):
@@ -97,27 +97,31 @@ def crossValidate(method,*args):
 def runCrossValidation(method,*param):
         
     mean={}
+    index=0.;
     # std=np.array([])
     
 
-    total=param[1].size*param[0].size
-    index=0.;
-    for par1 in param[0]:
-        for par2 in param[1]:
-            index+=1;
-           
-            mean[(par1,par2)]=crossValidate(method,par1,par2)
-            utl.progress(index,total)
-            # print (par1,par2) , mean[(par1,par2)]
-            
-            # mean=np.append(mean,a)
-            # std=np.append(std,b)
-        
+    # total=param[1].size*param[0].size
     # for par1 in param[0]:
-    #     mean[(par1,)]=crossValidate(method,par1)
-    #     print (par1,) , mean[(par1,)]
+    #     for par2 in param[1]:
+    #         index+=1;
+           
+    #         mean[(par1,par2)]=crossValidate(method,par1,par2)
+    #         utl.progress(index,total)
+    #         # print (par1,par2) , mean[(par1,par2)]
+            
     #         # mean=np.append(mean,a)
     #         # std=np.append(std,b)
+
+
+    total=param[0].size    
+    for par1 in param[0]:
+        index+=1
+        mean[(par1,)]=crossValidate(method,par1)
+        utl.progress(index,total)
+        # print (par1,) , mean[(par1,)]
+            # mean=np.append(mean,a)
+            # std=np.append(std,b)
         
 
 
@@ -128,19 +132,19 @@ def runCrossValidation(method,*param):
 # crossValidate(nnClassify_validate,1e-5)
 # pprint.pprint(runCrossValidation(rfClassify_validate,np.arange(17,18)))
 
-i=np.arange(2,40,1)
-j=np.arange(2,40,1)
+
+alpha=np.logspace(-50,1,3000)
 
 
 
+# mean=runSaved(False,"AlphaMean")
+# utl.plot2d(alpha,mean)
 
-mean=runSaved(False)
-
-
-
-
+# print alpha
+# i=np.arange(2,40,1)
+# j=np.arange(2,40,1)
 # pprint.pprint(mean)
-utl.plot(i,j,mean)
+# utl.plot3d(i,j,mean)
 
 
 '''

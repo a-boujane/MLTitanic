@@ -17,7 +17,7 @@ def load(name="mean"):
     with open("./data/"+name+".pkl",'r') as file:
         return pickle.load(file)
 
-def plot(x,y,mean):
+def plot3d(x,y,mean):
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     X, Y = np.meshgrid(x, y)
@@ -30,6 +30,13 @@ def plot(x,y,mean):
     ax.set_ylabel('Y Label')
     ax.set_zlabel('Z Label')
 
+    plt.show()
+
+def plot2d(x,mean):
+    plt.subplot(111)
+    plt.semilogx(x, mean.values())
+    plt.title('semilogx')
+    plt.grid(True)
     plt.show()
 
 def progress(index,total):
