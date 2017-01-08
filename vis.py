@@ -9,6 +9,8 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.ensemble import RandomForestClassifier
 import cvalidate as cv
 import pprint
+import utl
+
 
 #Prepare the Data
 
@@ -47,7 +49,7 @@ def nnClassify_validate(X,y,cvX,cvy,i,j):
 
 
 def nnClassify(X=X,y=y,i=50,j=2,alpha=1e-5):
-    clf=MLPClassifier(solver='lbfgs',alpha=alpha,hidden_layer_sizes=(i,j),random_state=1)
+    clf=MLPClassifier(solver='lbfgs',alpha=alpha,hidden_layer_sizes=(i,j),random_state=1,activation="logistic")
     clf.fit(X,y)
     return clf
 
@@ -75,7 +77,13 @@ def rfClaffisy(X=X,y=y,n_estimators=10):
 alpha=np.logspace(1e-30,0.3,50)
 
 
-
+def runSaved(boo):
+    if boo:
+        mean=utl.load()
+    else:
+        mean=runCrossValidation(nnClassify_validate,i,j)
+        utl.save(mean)
+    return mean
 
 def crossValidate(method,*args):
     # print "Using %s for classification" % method.func_name
@@ -84,17 +92,24 @@ def crossValidate(method,*args):
     for train,test in kf.split(X):
         mac=np.append(mac,method(X[train],y[train],X[test],y[test],*args))
     # print mac
-    return (mac.mean(),mac.std())
+    return mac.mean()
 
 def runCrossValidation(method,*param):
         
     mean={}
     # std=np.array([])
+    
 
+    total=param[1].size*param[0].size
+    index=0.;
     for par1 in param[0]:
         for par2 in param[1]:
+            index+=1;
+           
             mean[(par1,par2)]=crossValidate(method,par1,par2)
-            print (par1,par2) , mean[(par1,par2)]
+            utl.progress(index,total)
+            # print (par1,par2) , mean[(par1,par2)]
+            
             # mean=np.append(mean,a)
             # std=np.append(std,b)
         
@@ -105,52 +120,32 @@ def runCrossValidation(method,*param):
     #         # std=np.append(std,b)
         
 
-    
-    # plt.subplot(211)
-    # plt.title("Mean")
-    # plt.plot()
-    # plt.subplot(212)
-    # plt.title("STD")
-    # plt.plot(paramAxes3D.plot_wireframe(X, Y, Z[0],std)
-    # Axes3D.plot_wireframe(X, Y, Z
-    # plt.show()
+
+    print ""
     return mean
 
 # crossValidate(classify_validate,0.1,'l1')
 # crossValidate(nnClassify_validate,1e-5)
 # pprint.pprint(runCrossValidation(rfClassify_validate,np.arange(17,18)))
 
-i=np.arange(5,25,1)
-j=np.arange(5,30,4)
+i=np.arange(2,40,1)
+j=np.arange(2,40,1)
 
 
-# pprint.pprint(runCrossValidation(nnClassify_validate,i,j))
+
+
+mean=runSaved(False)
+
+
+
+
+# pprint.pprint(mean)
+utl.plot(i,j,mean)
+
+
 '''
 For Logistic Regression: C=0.23
 '''
 C=np.linspace(0.01,10,100)
 # pprint.pprint(runCrossValidation(classify_validate,C))
 
-# print y.shape
-# hy=clf.predict(sc.getX());
-# print hy
-# print hy.shape
-# print clf.score(sc.getX(),sc.getY());
-# print sc.getY().shape
-
-# fuckups=np.abs(sc.getY()-hy)
-# fuckups=fuckups.sum()/2
-# print fuckups
-# print df.info()
-
-
-
-# np.savetxt("./data/output/csresult",cvresult)
-# k=9
-# xaxis=[]
-# yaxis=[]
-# for i in range(0,k-1):
-#     start=i*99
-#     finish=(i+1)*99-1
-#     classify_validate(C,X[start:finish],)
-#runCrossValidation()
